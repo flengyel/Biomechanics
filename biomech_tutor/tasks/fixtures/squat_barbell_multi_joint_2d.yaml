@@ -1,4 +1,144 @@
 id: squat_barbell_multi_joint_2d
+title: Squat barbell multi-joint worksheet
 status: scaffold
-coverage_level: metadata_only
+coverage_level: worksheet_scaffold
 source_worksheet: "Activities/Squat with barbell Jc.pptx"
+level: introductory_physics
+body_part_system:
+  id: whole_person_and_left_leg
+  display_name: Whole person and left leg systems
+joint_axis:
+  id: selectable_lower_limb_axis
+  joint: hip_knee_or_ankle
+  display_name: Hip, knee, or ankle axis
+  visible_to_student: true
+rotation_convention:
+  positive: extension_or_plantarflexion
+  negative: flexion_or_dorsiflexion
+  zero: zero torque
+  display_labels: [extension, flexion, plantarflexion, dorsiflexion, zero]
+assumptions:
+  planar: true
+  static: true
+  rigid_segments: true
+  ignored_forces: []
+  simplifications:
+    - barbell force equals 3 Wbody when declared
+    - left and right floor normals are equal
+    - analyzed lever system switches among hip, knee, and ankle
+    - worksheet picture angle requires declared geometry or instructor key
+force_inventory:
+  - id: body_weight
+    display_name: Body weight
+    kind: weight
+    required_for_torque_balance: false
+    required_for_force_balance: true
+    student_must_draw_force: true
+    student_must_draw_line_of_action: false
+    student_must_draw_lever_arm: false
+    student_must_identify_torque_direction: false
+    student_must_select_sign: true
+    may_have_zero_torque: false
+  - id: barbell_force
+    display_name: Barbell force
+    kind: external_load
+    required_for_torque_balance: false
+    required_for_force_balance: true
+    student_must_draw_force: true
+    student_must_draw_line_of_action: false
+    student_must_draw_lever_arm: false
+    student_must_identify_torque_direction: false
+    student_must_select_sign: true
+    may_have_zero_torque: false
+  - id: left_floor_normal
+    display_name: Left floor normal
+    kind: contact_force
+    required_for_torque_balance: true
+    required_for_force_balance: true
+    student_must_draw_force: true
+    student_must_draw_line_of_action: true
+    student_must_draw_lever_arm: true
+    student_must_identify_torque_direction: true
+    student_must_select_sign: true
+    may_have_zero_torque: false
+  - id: right_floor_normal
+    display_name: Right floor normal
+    kind: contact_force
+    required_for_torque_balance: false
+    required_for_force_balance: true
+    student_must_draw_force: true
+    student_must_draw_line_of_action: false
+    student_must_draw_lever_arm: false
+    student_must_identify_torque_direction: false
+    student_must_select_sign: true
+    may_have_zero_torque: false
+  - id: gluteus_muscle_force
+    display_name: Gluteus muscle force
+    kind: muscle_force
+    required_for_torque_balance: true
+    required_for_force_balance: false
+    student_must_draw_force: true
+    student_must_draw_line_of_action: true
+    student_must_draw_lever_arm: true
+    student_must_identify_torque_direction: true
+    student_must_select_sign: true
+    may_have_zero_torque: false
+  - id: quadriceps_muscle_force
+    display_name: Quadriceps muscle force
+    kind: muscle_force
+    required_for_torque_balance: true
+    required_for_force_balance: false
+    student_must_draw_force: true
+    student_must_draw_line_of_action: true
+    student_must_draw_lever_arm: true
+    student_must_identify_torque_direction: true
+    student_must_select_sign: true
+    may_have_zero_torque: false
+  - id: calf_muscle_force
+    display_name: Achilles/calf muscle force
+    kind: muscle_force
+    required_for_torque_balance: true
+    required_for_force_balance: false
+    student_must_draw_force: true
+    student_must_draw_line_of_action: true
+    student_must_draw_lever_arm: true
+    student_must_identify_torque_direction: true
+    student_must_select_sign: true
+    may_have_zero_torque: false
+student_actions:
+  - id: solve_floor_normals
+    prompt_type: force_equilibrium
+    description: Solve left and right floor normals under the equal-normal assumption.
+    related_forces: [body_weight, barbell_force, left_floor_normal, right_floor_normal]
+    validation: executable
+  - id: switch_lever_system
+    prompt_type: body_part_system
+    description: Switch the analyzed lever system among hip, knee, and ankle.
+    related_forces: [left_floor_normal]
+    validation: requires_declared_geometry
+  - id: identify_floor_torque
+    prompt_type: torque_direction
+    description: Identify torque direction of n_left about hip, knee, and ankle.
+    related_forces: [left_floor_normal]
+    validation: requires_declared_geometry
+  - id: choose_counter_torque_muscle
+    prompt_type: muscle_choice
+    description: Choose the muscle group opposing the floor-normal torque.
+    related_forces: [gluteus_muscle_force, quadriceps_muscle_force, calf_muscle_force]
+    validation: requires_instructor_key
+allowed_equations:
+  - id: whole_person_force_balance
+    display: "sum(F) = 0 with n_left = n_right"
+    uses_forces: [body_weight, barbell_force, left_floor_normal, right_floor_normal]
+  - id: lower_limb_torque_balance
+    display: "n * r_perp_n = M * r_perp_M"
+    uses_forces: [left_floor_normal, gluteus_muscle_force, quadriceps_muscle_force, calf_muscle_force]
+missing_data_policy:
+  default: requires_declared_geometry
+  notes:
+    - Barbell and body-weight values must be declared before numeric solving.
+    - Picture-angle interpretation requires simplified geometry or an instructor key.
+diagnostics: {}
+hints: {}
+rubric: {}
+external_references: []

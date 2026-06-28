@@ -1,4 +1,118 @@
 id: elbow_biceps_curl_2d
+title: Elbow biceps curl static torque balance
 status: scaffold
-coverage_level: metadata_only
+coverage_level: worksheet_scaffold
 source_worksheet: "Activities/Activity Biceps Curl2d.pptx"
+level: introductory_physics
+body_part_system:
+  id: forearm_hand
+  display_name: Forearm/hand
+joint_axis:
+  id: elbow_axis
+  joint: elbow
+  display_name: Elbow axis
+  visible_to_student: true
+rotation_convention:
+  positive: flexion
+  negative: extension
+  zero: zero torque
+  display_labels: [flexion, extension, zero]
+assumptions:
+  planar: true
+  static: true
+  rigid_segments: true
+  ignored_forces: [forearm_hand_weight]
+  simplifications:
+    - forearm/hand held still
+    - arm weight neglected in first torque analysis
+    - all forces vertical when force equilibrium is declared
+force_inventory:
+  - id: dumbbell_force
+    display_name: Dumbbell force
+    kind: external_load
+    required_for_torque_balance: true
+    required_for_force_balance: true
+    student_must_draw_force: true
+    student_must_draw_line_of_action: true
+    student_must_draw_lever_arm: true
+    student_must_identify_torque_direction: true
+    student_must_select_sign: true
+    may_have_zero_torque: false
+  - id: biceps_muscle_force
+    display_name: Biceps muscle force
+    kind: muscle_force
+    required_for_torque_balance: true
+    required_for_force_balance: true
+    student_must_draw_force: true
+    student_must_draw_line_of_action: true
+    student_must_draw_lever_arm: true
+    student_must_identify_torque_direction: true
+    student_must_select_sign: true
+    may_have_zero_torque: false
+  - id: triceps_muscle_force
+    display_name: Triceps muscle force
+    kind: muscle_force
+    required_for_torque_balance: true
+    required_for_force_balance: false
+    student_must_draw_force: true
+    student_must_draw_line_of_action: true
+    student_must_draw_lever_arm: true
+    student_must_identify_torque_direction: true
+    student_must_select_sign: false
+    may_have_zero_torque: false
+  - id: elbow_joint_force
+    display_name: Elbow joint force
+    kind: joint_force
+    required_for_torque_balance: false
+    required_for_force_balance: true
+    student_must_draw_force: true
+    student_must_draw_line_of_action: false
+    student_must_draw_lever_arm: false
+    student_must_identify_torque_direction: false
+    student_must_select_sign: true
+    may_have_zero_torque: true
+student_actions:
+  - id: draw_dumbbell_force
+    prompt_type: force_inventory
+    description: Draw the dumbbell force on the forearm/hand.
+    related_forces: [dumbbell_force]
+    validation: requires_declared_geometry
+  - id: identify_torque_directions
+    prompt_type: torque_direction
+    description: Identify dumbbell and muscle torque directions about the elbow.
+    related_forces: [dumbbell_force, biceps_muscle_force, triceps_muscle_force]
+    validation: requires_declared_geometry
+  - id: choose_counter_torque_muscle
+    prompt_type: muscle_choice
+    description: Choose the muscle that can oppose the dumbbell torque.
+    related_forces: [biceps_muscle_force, triceps_muscle_force]
+    validation: requires_instructor_key
+  - id: estimate_muscle_force
+    prompt_type: lever_arm_ratio
+    description: Estimate muscle force from a declared lever-arm ratio.
+    related_forces: [dumbbell_force, biceps_muscle_force]
+    validation: requires_declared_geometry
+  - id: solve_elbow_joint_force
+    prompt_type: force_equilibrium
+    description: Choose force-equilibrium signs and solve the elbow joint force.
+    related_forces: [dumbbell_force, biceps_muscle_force, elbow_joint_force]
+    validation: requires_instructor_key
+allowed_equations:
+  - id: torque_balance
+    display: "sum(tau) = 0"
+    uses_forces: [dumbbell_force, biceps_muscle_force, triceps_muscle_force]
+  - id: muscle_equals_dumbbell_torque
+    display: "M * r_perp_M = F_dumbbell * r_perp_dumbbell"
+    uses_forces: [dumbbell_force, biceps_muscle_force]
+  - id: vertical_force_balance
+    display: "sum(F) = 0"
+    uses_forces: [dumbbell_force, biceps_muscle_force, elbow_joint_force]
+missing_data_policy:
+  default: requires_declared_geometry
+  notes:
+    - Body-weight scaling requires an instructor-supplied standards value.
+    - The compiler must not invent lever-arm lengths or force magnitudes.
+diagnostics: {}
+hints: {}
+rubric: {}
+external_references: []

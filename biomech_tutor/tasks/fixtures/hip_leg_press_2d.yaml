@@ -1,4 +1,98 @@
 id: hip_leg_press_2d
+title: Hip leg press static torque balance
 status: scaffold
-coverage_level: metadata_only
+coverage_level: worksheet_scaffold
 source_worksheet: "Activities/Activity Leg press 3b.pptx"
+level: introductory_physics
+body_part_system:
+  id: whole_leg
+  display_name: Whole leg
+joint_axis:
+  id: hip_axis
+  joint: hip
+  display_name: Hip axis
+  visible_to_student: true
+rotation_convention:
+  positive: extension
+  negative: flexion
+  zero: zero torque
+  display_labels: [extension, flexion, zero]
+assumptions:
+  planar: true
+  static: true
+  rigid_segments: true
+  ignored_forces: []
+  simplifications:
+    - leg press platform held still
+    - per-leg platform force used when standards value is for both legs
+force_inventory:
+  - id: platform_force
+    display_name: Platform force on leg/foot
+    kind: contact_force
+    required_for_torque_balance: true
+    required_for_force_balance: false
+    student_must_draw_force: true
+    student_must_draw_line_of_action: true
+    student_must_draw_lever_arm: true
+    student_must_identify_torque_direction: true
+    student_must_select_sign: true
+    may_have_zero_torque: false
+  - id: gluteus_maximus_muscle_force
+    display_name: Gluteus maximus muscle force
+    kind: muscle_force
+    required_for_torque_balance: true
+    required_for_force_balance: false
+    student_must_draw_force: true
+    student_must_draw_line_of_action: true
+    student_must_draw_lever_arm: true
+    student_must_identify_torque_direction: true
+    student_must_select_sign: true
+    may_have_zero_torque: false
+  - id: psoas_muscle_force
+    display_name: Psoas muscle force
+    kind: muscle_force
+    required_for_torque_balance: true
+    required_for_force_balance: false
+    student_must_draw_force: true
+    student_must_draw_line_of_action: true
+    student_must_draw_lever_arm: true
+    student_must_identify_torque_direction: true
+    student_must_select_sign: false
+    may_have_zero_torque: false
+student_actions:
+  - id: draw_platform_force
+    prompt_type: force_inventory
+    description: Draw and orient the platform force on the leg/foot.
+    related_forces: [platform_force]
+    validation: requires_declared_geometry
+  - id: identify_platform_torque
+    prompt_type: torque_direction
+    description: Identify platform-force torque direction about the hip.
+    related_forces: [platform_force]
+    validation: requires_declared_geometry
+  - id: choose_counter_torque_muscle
+    prompt_type: muscle_choice
+    description: Choose gluteus maximus or psoas as the counter-torque muscle.
+    related_forces: [gluteus_maximus_muscle_force, psoas_muscle_force]
+    validation: requires_instructor_key
+  - id: isolate_muscle_force
+    prompt_type: equation_rearrangement
+    description: Isolate muscle force in terms of platform force and lever-arm ratio.
+    related_forces: [platform_force, gluteus_maximus_muscle_force]
+    validation: requires_declared_geometry
+allowed_equations:
+  - id: torque_balance
+    display: "sum(tau) = 0"
+    uses_forces: [platform_force, gluteus_maximus_muscle_force, psoas_muscle_force]
+  - id: platform_muscle_ratio
+    display: "M * r_perp_M = F_platform * r_perp_platform"
+    uses_forces: [platform_force, gluteus_maximus_muscle_force]
+missing_data_policy:
+  default: requires_declared_geometry
+  notes:
+    - Per-leg scaling requires declared standards metadata.
+    - Platform-force direction must come from declared geometry or an instructor key.
+diagnostics: {}
+hints: {}
+rubric: {}
+external_references: []

@@ -1,4 +1,98 @@
 id: knee_leg_extension_2d
+title: Knee leg extension static torque balance
 status: scaffold
-coverage_level: metadata_only
+coverage_level: worksheet_scaffold
 source_worksheet: "Activities/Activity Leg Extension3.pptx"
+level: introductory_physics
+body_part_system:
+  id: lower_leg_foot
+  display_name: Lower leg/foot
+joint_axis:
+  id: knee_axis
+  joint: knee
+  display_name: Knee axis
+  visible_to_student: true
+rotation_convention:
+  positive: extension
+  negative: flexion
+  zero: zero torque
+  display_labels: [extension, flexion, zero]
+assumptions:
+  planar: true
+  static: true
+  rigid_segments: true
+  ignored_forces: []
+  simplifications:
+    - lower leg held still
+    - per-leg scaling required when a standards value is for both legs
+force_inventory:
+  - id: bar_force
+    display_name: Bar force on top of foot
+    kind: external_load
+    required_for_torque_balance: true
+    required_for_force_balance: false
+    student_must_draw_force: true
+    student_must_draw_line_of_action: true
+    student_must_draw_lever_arm: true
+    student_must_identify_torque_direction: true
+    student_must_select_sign: true
+    may_have_zero_torque: false
+  - id: quadriceps_muscle_force
+    display_name: Quadriceps muscle force
+    kind: muscle_force
+    required_for_torque_balance: true
+    required_for_force_balance: false
+    student_must_draw_force: true
+    student_must_draw_line_of_action: true
+    student_must_draw_lever_arm: true
+    student_must_identify_torque_direction: true
+    student_must_select_sign: true
+    may_have_zero_torque: false
+  - id: hamstrings_muscle_force
+    display_name: Hamstrings muscle force
+    kind: muscle_force
+    required_for_torque_balance: true
+    required_for_force_balance: false
+    student_must_draw_force: true
+    student_must_draw_line_of_action: true
+    student_must_draw_lever_arm: true
+    student_must_identify_torque_direction: true
+    student_must_select_sign: false
+    may_have_zero_torque: false
+student_actions:
+  - id: draw_bar_force
+    prompt_type: force_inventory
+    description: Draw the bar force on top of the foot.
+    related_forces: [bar_force]
+    validation: requires_declared_geometry
+  - id: identify_bar_torque
+    prompt_type: torque_direction
+    description: Identify the bar-force torque direction about the knee.
+    related_forces: [bar_force]
+    validation: requires_declared_geometry
+  - id: choose_counter_torque_muscle
+    prompt_type: muscle_choice
+    description: Choose quadriceps or hamstrings as the counter-torque muscle.
+    related_forces: [quadriceps_muscle_force, hamstrings_muscle_force]
+    validation: requires_instructor_key
+  - id: estimate_muscle_force
+    prompt_type: lever_arm_ratio
+    description: Estimate muscle force relative to the bar force.
+    related_forces: [bar_force, quadriceps_muscle_force]
+    validation: requires_declared_geometry
+allowed_equations:
+  - id: torque_balance
+    display: "sum(tau) = 0"
+    uses_forces: [bar_force, quadriceps_muscle_force, hamstrings_muscle_force]
+  - id: muscle_bar_ratio
+    display: "M * r_perp_M = F_bar * r_perp_bar"
+    uses_forces: [bar_force, quadriceps_muscle_force]
+missing_data_policy:
+  default: requires_declared_geometry
+  notes:
+    - Body-weight scaling requires instructor-supplied standards values.
+    - Two-leg standards must be split before using one-leg force prompts.
+diagnostics: {}
+hints: {}
+rubric: {}
+external_references: []

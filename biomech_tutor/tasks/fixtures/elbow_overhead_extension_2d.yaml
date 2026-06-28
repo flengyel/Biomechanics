@@ -1,4 +1,124 @@
 id: elbow_overhead_extension_2d
+title: Elbow overhead extension torque balance
 status: scaffold
-coverage_level: metadata_only
+coverage_level: worksheet_scaffold
 source_worksheet: "Activities/Activity overhead extension 3.pptx"
+level: introductory_physics
+body_part_system:
+  id: forearm_hand
+  display_name: Forearm/hand
+joint_axis:
+  id: elbow_axis
+  joint: elbow
+  display_name: Elbow axis
+  visible_to_student: true
+rotation_convention:
+  positive: extension
+  negative: flexion
+  zero: zero torque
+  display_labels: [extension, flexion, zero]
+assumptions:
+  planar: true
+  static: true
+  rigid_segments: true
+  ignored_forces: []
+  simplifications:
+    - forearm/hand held still
+    - simplified prompts may neglect forearm/hand weight
+    - all forces vertical when force equilibrium is declared
+force_inventory:
+  - id: dumbbell_force
+    display_name: Dumbbell force
+    kind: external_load
+    required_for_torque_balance: true
+    required_for_force_balance: true
+    student_must_draw_force: true
+    student_must_draw_line_of_action: true
+    student_must_draw_lever_arm: true
+    student_must_identify_torque_direction: true
+    student_must_select_sign: true
+    may_have_zero_torque: false
+  - id: forearm_hand_weight
+    display_name: Forearm/hand weight
+    kind: weight
+    required_for_torque_balance: true
+    required_for_force_balance: true
+    student_must_draw_force: true
+    student_must_draw_line_of_action: true
+    student_must_draw_lever_arm: true
+    student_must_identify_torque_direction: true
+    student_must_select_sign: true
+    may_have_zero_torque: false
+  - id: triceps_muscle_force
+    display_name: Triceps muscle force
+    kind: muscle_force
+    required_for_torque_balance: true
+    required_for_force_balance: true
+    student_must_draw_force: true
+    student_must_draw_line_of_action: true
+    student_must_draw_lever_arm: true
+    student_must_identify_torque_direction: true
+    student_must_select_sign: true
+    may_have_zero_torque: false
+  - id: biceps_muscle_force
+    display_name: Biceps muscle force
+    kind: muscle_force
+    required_for_torque_balance: true
+    required_for_force_balance: false
+    student_must_draw_force: true
+    student_must_draw_line_of_action: true
+    student_must_draw_lever_arm: true
+    student_must_identify_torque_direction: true
+    student_must_select_sign: false
+    may_have_zero_torque: false
+  - id: elbow_joint_force
+    display_name: Elbow joint force
+    kind: joint_force
+    required_for_torque_balance: false
+    required_for_force_balance: true
+    student_must_draw_force: true
+    student_must_draw_line_of_action: false
+    student_must_draw_lever_arm: false
+    student_must_identify_torque_direction: false
+    student_must_select_sign: true
+    may_have_zero_torque: true
+student_actions:
+  - id: draw_external_torques
+    prompt_type: torque_direction
+    description: Draw torque directions and lever arms for dumbbell and arm weight.
+    related_forces: [dumbbell_force, forearm_hand_weight]
+    validation: requires_declared_geometry
+  - id: choose_counter_torque_muscle
+    prompt_type: muscle_choice
+    description: Choose the triceps or biceps as the counter-torque muscle.
+    related_forces: [triceps_muscle_force, biceps_muscle_force]
+    validation: requires_instructor_key
+  - id: estimate_muscle_force
+    prompt_type: lever_arm_ratio
+    description: Estimate muscle force from the dumbbell and lever-arm ratio.
+    related_forces: [dumbbell_force, triceps_muscle_force]
+    validation: requires_declared_geometry
+  - id: compare_with_arm_weight
+    prompt_type: simplification_compare
+    description: Compare the simplified result with the result including arm weight.
+    related_forces: [dumbbell_force, forearm_hand_weight, triceps_muscle_force]
+    validation: requires_instructor_key
+allowed_equations:
+  - id: signed_torque_balance
+    display: "sum(tau_forearm_hand) = 0"
+    uses_forces: [dumbbell_force, forearm_hand_weight, triceps_muscle_force, biceps_muscle_force]
+  - id: simplified_ratio
+    display: "F_muscle / F_dumbbell = r_perp_dumbbell / r_perp_muscle"
+    uses_forces: [dumbbell_force, triceps_muscle_force]
+  - id: vertical_force_balance
+    display: "sum(F) = 0"
+    uses_forces: [dumbbell_force, forearm_hand_weight, triceps_muscle_force, elbow_joint_force]
+missing_data_policy:
+  default: requires_declared_geometry
+  notes:
+    - Dumbbell body-weight ratio and arm weight constants must be declared before use.
+    - Including arm weight requires declared or instructor-keyed values.
+diagnostics: {}
+hints: {}
+rubric: {}
+external_references: []

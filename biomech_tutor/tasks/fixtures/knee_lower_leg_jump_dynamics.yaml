@@ -1,4 +1,110 @@
 id: knee_lower_leg_jump_dynamics
+title: Knee lower-leg jump qualitative dynamics
 status: scaffold
-coverage_level: metadata_only
+coverage_level: worksheet_scaffold
 source_worksheet: "Activities/Activity Which muscle when lower leg knee partially done.pptx"
+level: introductory_physics
+body_part_system:
+  id: lower_leg_foot
+  display_name: Lower leg-foot
+joint_axis:
+  id: knee_axis
+  joint: knee
+  display_name: Knee axis
+  visible_to_student: true
+rotation_convention:
+  positive: extension
+  negative: flexion
+  zero: zero angular acceleration
+  display_labels: [extension, flexion, zero]
+assumptions:
+  planar: true
+  static: false
+  rigid_segments: true
+  ignored_forces: []
+  simplifications:
+    - in-air intervals ignored
+    - muscle represented as direct joint torque
+    - sign of net torque follows sign of angular acceleration
+force_inventory:
+  - id: floor_normal_torque
+    display_name: Floor normal torque
+    kind: direct_muscle_torque
+    required_for_torque_balance: true
+    required_for_force_balance: false
+    student_must_draw_force: false
+    student_must_draw_line_of_action: false
+    student_must_draw_lever_arm: false
+    student_must_identify_torque_direction: true
+    student_must_select_sign: true
+    may_have_zero_torque: false
+  - id: quadriceps_muscle_torque
+    display_name: Quadriceps muscle torque
+    kind: direct_muscle_torque
+    required_for_torque_balance: true
+    required_for_force_balance: false
+    student_must_draw_force: false
+    student_must_draw_line_of_action: false
+    student_must_draw_lever_arm: false
+    student_must_identify_torque_direction: true
+    student_must_select_sign: true
+    may_have_zero_torque: false
+  - id: hamstrings_muscle_torque
+    display_name: Hamstrings muscle torque
+    kind: direct_muscle_torque
+    required_for_torque_balance: true
+    required_for_force_balance: false
+    student_must_draw_force: false
+    student_must_draw_line_of_action: false
+    student_must_draw_lever_arm: false
+    student_must_identify_torque_direction: true
+    student_must_select_sign: true
+    may_have_zero_torque: false
+  - id: net_torque
+    display_name: Net torque
+    kind: direct_muscle_torque
+    required_for_torque_balance: true
+    required_for_force_balance: false
+    student_must_draw_force: false
+    student_must_draw_line_of_action: false
+    student_must_draw_lever_arm: false
+    student_must_identify_torque_direction: true
+    student_must_select_sign: true
+    may_have_zero_torque: true
+student_actions:
+  - id: read_omega_alpha_signs
+    prompt_type: graph_sign
+    description: Read or assign angular velocity and angular acceleration signs.
+    related_forces: [net_torque]
+    validation: requires_instructor_key
+  - id: identify_force_torque_directions
+    prompt_type: torque_direction
+    description: Identify floor, quadriceps, and hamstrings torque directions.
+    related_forces: [floor_normal_torque, quadriceps_muscle_torque, hamstrings_muscle_torque]
+    validation: requires_instructor_key
+  - id: choose_needed_muscle
+    prompt_type: muscle_choice
+    description: Select which muscle torque can cause the required angular acceleration.
+    related_forces: [quadriceps_muscle_torque, hamstrings_muscle_torque, net_torque]
+    validation: requires_instructor_key
+  - id: assign_dynamic_equation_signs
+    prompt_type: equation_sign
+    description: Assign signs in plus/minus tau_M plus/minus tau_n equals plus/minus I alpha.
+    related_forces: [floor_normal_torque, quadriceps_muscle_torque, hamstrings_muscle_torque, net_torque]
+    validation: requires_instructor_key
+allowed_equations:
+  - id: rotational_dynamics
+    display: "sum(tau) = I * alpha"
+    uses_forces: [floor_normal_torque, quadriceps_muscle_torque, hamstrings_muscle_torque, net_torque]
+  - id: sign_rule
+    display: "sign(sum(tau)) = sign(alpha)"
+    uses_forces: [net_torque]
+missing_data_policy:
+  default: requires_instructor_key
+  notes:
+    - Graph intervals and dominance regions require an instructor key.
+    - The task is qualitative dynamics, not continuous simulation.
+diagnostics: {}
+hints: {}
+rubric: {}
+external_references: []

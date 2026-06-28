@@ -1,4 +1,98 @@
 id: head_atlanto_occipital_seesaw_2d
+title: Head atlanto-occipital seesaw
 status: scaffold
-coverage_level: metadata_only
+coverage_level: worksheet_scaffold
 source_worksheet: "Activities/Activity Head as seesawb.pptx"
+level: introductory_physics
+body_part_system:
+  id: head
+  display_name: Head
+joint_axis:
+  id: atlanto_occipital_axis
+  joint: atlanto-occipital
+  display_name: Atlanto-occipital joint axis
+  visible_to_student: true
+rotation_convention:
+  positive: extension
+  negative: flexion
+  zero: zero torque
+  display_labels: [extension, flexion, zero]
+assumptions:
+  planar: true
+  static: true
+  rigid_segments: true
+  ignored_forces: []
+  simplifications:
+    - head treated as a seesaw about the atlanto-occipital joint
+    - neck muscle and head weight produce opposing torques
+force_inventory:
+  - id: head_weight
+    display_name: Head weight
+    kind: weight
+    required_for_torque_balance: true
+    required_for_force_balance: true
+    student_must_draw_force: true
+    student_must_draw_line_of_action: true
+    student_must_draw_lever_arm: true
+    student_must_identify_torque_direction: true
+    student_must_select_sign: true
+    may_have_zero_torque: false
+  - id: neck_muscle_force
+    display_name: Neck muscle force
+    kind: muscle_force
+    required_for_torque_balance: true
+    required_for_force_balance: true
+    student_must_draw_force: true
+    student_must_draw_line_of_action: true
+    student_must_draw_lever_arm: true
+    student_must_identify_torque_direction: true
+    student_must_select_sign: true
+    may_have_zero_torque: false
+  - id: atlanto_occipital_joint_force
+    display_name: Atlanto-occipital joint force
+    kind: joint_force
+    required_for_torque_balance: false
+    required_for_force_balance: true
+    student_must_draw_force: true
+    student_must_draw_line_of_action: false
+    student_must_draw_lever_arm: false
+    student_must_identify_torque_direction: false
+    student_must_select_sign: true
+    may_have_zero_torque: true
+student_actions:
+  - id: identify_weight_and_muscle_lever_arms
+    prompt_type: lever_arm
+    description: Draw or identify r and r_perp for weight and muscle force.
+    related_forces: [head_weight, neck_muscle_force]
+    validation: requires_declared_geometry
+  - id: estimate_head_weight
+    prompt_type: body_weight_scaling
+    description: Estimate head weight from body weight when data are supplied.
+    related_forces: [head_weight]
+    validation: requires_instructor_key
+  - id: estimate_neck_muscle_force
+    prompt_type: lever_arm_ratio
+    description: Estimate neck muscle force by lever-arm ratio.
+    related_forces: [head_weight, neck_muscle_force]
+    validation: requires_declared_geometry
+  - id: solve_joint_force
+    prompt_type: force_equilibrium
+    description: Compute or estimate the joint force.
+    related_forces: [head_weight, neck_muscle_force, atlanto_occipital_joint_force]
+    validation: requires_instructor_key
+allowed_equations:
+  - id: torque_balance
+    display: "F_neck_muscle * r_perp_muscle = W_head * r_perp_W"
+    uses_forces: [head_weight, neck_muscle_force]
+  - id: force_balance
+    display: "-W_head - F_muscle + J = 0"
+    uses_forces: [head_weight, neck_muscle_force, atlanto_occipital_joint_force]
+missing_data_policy:
+  default: requires_declared_geometry
+  notes:
+    - Head-weight body scaling requires instructor-supplied values.
+    - Joint-force estimates require declared force directions.
+diagnostics: {}
+hints: {}
+rubric: {}
+external_references: []

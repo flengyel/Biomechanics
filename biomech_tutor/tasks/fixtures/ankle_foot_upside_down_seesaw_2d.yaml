@@ -1,4 +1,113 @@
 id: ankle_foot_upside_down_seesaw_2d
+title: Ankle foot upside-down seesaw
 status: scaffold
-coverage_level: metadata_only
+coverage_level: worksheet_scaffold
 source_worksheet: "Activities/Activity Foot - upside down seesawc.pptx"
+level: introductory_physics
+body_part_system:
+  id: foot
+  display_name: Foot
+joint_axis:
+  id: ankle_axis
+  joint: ankle
+  display_name: Ankle axis
+  visible_to_student: true
+rotation_convention:
+  positive: plantarflexion
+  negative: dorsiflexion
+  zero: zero torque
+  display_labels: [plantarflexion, dorsiflexion, zero]
+assumptions:
+  planar: true
+  static: true
+  rigid_segments: true
+  ignored_forces: [foot_weight]
+  simplifications:
+    - foot weight omitted when declared
+    - floor normal equals body weight when declared
+    - simplified vertical-force approximation may be used
+force_inventory:
+  - id: floor_normal
+    display_name: Floor normal
+    kind: contact_force
+    required_for_torque_balance: true
+    required_for_force_balance: true
+    student_must_draw_force: true
+    student_must_draw_line_of_action: true
+    student_must_draw_lever_arm: true
+    student_must_identify_torque_direction: true
+    student_must_select_sign: true
+    may_have_zero_torque: false
+  - id: achilles_calf_muscle_force
+    display_name: Achilles/calf muscle force
+    kind: muscle_force
+    required_for_torque_balance: true
+    required_for_force_balance: true
+    student_must_draw_force: true
+    student_must_draw_line_of_action: true
+    student_must_draw_lever_arm: true
+    student_must_identify_torque_direction: true
+    student_must_select_sign: true
+    may_have_zero_torque: false
+  - id: tibialis_muscle_force
+    display_name: Tibialis muscle force
+    kind: muscle_force
+    required_for_torque_balance: true
+    required_for_force_balance: false
+    student_must_draw_force: true
+    student_must_draw_line_of_action: true
+    student_must_draw_lever_arm: true
+    student_must_identify_torque_direction: true
+    student_must_select_sign: false
+    may_have_zero_torque: false
+  - id: ankle_joint_force
+    display_name: Ankle joint force
+    kind: joint_force
+    required_for_torque_balance: false
+    required_for_force_balance: true
+    student_must_draw_force: true
+    student_must_draw_line_of_action: false
+    student_must_draw_lever_arm: false
+    student_must_identify_torque_direction: false
+    student_must_select_sign: true
+    may_have_zero_torque: true
+student_actions:
+  - id: identify_floor_torque
+    prompt_type: torque_direction
+    description: Identify floor-force torque direction as dorsiflexion or plantarflexion.
+    related_forces: [floor_normal]
+    validation: requires_declared_geometry
+  - id: choose_counter_torque_muscle
+    prompt_type: muscle_choice
+    description: Choose Achilles/calf or tibialis as the counter-torque muscle.
+    related_forces: [achilles_calf_muscle_force, tibialis_muscle_force]
+    validation: requires_instructor_key
+  - id: estimate_achilles_force
+    prompt_type: lever_arm_ratio
+    description: Estimate Achilles force relative to body weight.
+    related_forces: [floor_normal, achilles_calf_muscle_force]
+    validation: requires_declared_geometry
+  - id: solve_joint_force
+    prompt_type: force_equilibrium
+    description: Estimate ankle joint force under declared simplifications.
+    related_forces: [floor_normal, achilles_calf_muscle_force, ankle_joint_force]
+    validation: requires_instructor_key
+allowed_equations:
+  - id: torque_balance
+    display: "+ tau_Achilles - tau_floor = 0"
+    uses_forces: [floor_normal, achilles_calf_muscle_force]
+  - id: achilles_ratio
+    display: "F_Achilles * r_perp_Achilles = n_floor * r_perp_floor"
+    uses_forces: [floor_normal, achilles_calf_muscle_force]
+  - id: force_balance
+    display: "sum(Fx) = 0 and sum(Fy) = 0"
+    uses_forces: [floor_normal, achilles_calf_muscle_force, ankle_joint_force]
+missing_data_policy:
+  default: requires_declared_geometry
+  notes:
+    - External diagram critiques require an instructor key before asserting correctness.
+    - Joint-force magnitude requires declared force directions or simplifications.
+diagnostics: {}
+hints: {}
+rubric: {}
+external_references: []
