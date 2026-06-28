@@ -1,0 +1,1 @@
+"""Physical and instructional constraints."""

@@ -1,0 +1,1 @@
+"""Learner equation input models."""

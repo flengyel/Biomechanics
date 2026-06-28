@@ -1,0 +1,1 @@
+"""Instructor authoring schema definitions."""
