@@ -11,3 +11,13 @@ Build a Python package that represents student biomechanics work as structured f
 - Treat external standards pages as metadata references unless an instructor explicitly supplies values.
 - Keep student-facing language separate from the diagnostic engine.
 - Report the earliest blocking conceptual error before downstream errors.
+
+## Layer Boundaries
+
+- Engine packages (`core`, `physics`, and `anatomy`) may use formal internal types, but must not import task, instructor, learner, diagnostics, student-projection, or demo layers.
+- The task compiler may target engine objects, but must not depend on student projection, learner interaction, diagnostics, instructor UI, or demos.
+- Instructor authoring code should depend on task vocabulary rather than engine internals.
+- Student projection code may consume compiled task specs, but must not import or expose frame, transform, wrench, or transport terminology.
+- Diagnostics may translate engine failures into feedback, but student-facing messages should use worksheet and course language.
+
+These are dependency and visibility boundaries, not expressiveness limits. The engine can remain mathematically rich while outer layers receive controlled projections.
