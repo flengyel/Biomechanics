@@ -11,11 +11,13 @@ from biomech_tutor.physics.torques import (
     torque_z_from_force,
     torque_z_from_line_of_action,
 )
+from biomech_tutor.physics.wrenches import Wrench2D
 
 __all__ = [
     "Force2D",
     "LeverArm2D",
     "LineOfAction2D",
+    "Wrench2D",
     "lever_arm_for_line",
     "torque_sign_about_point",
     "torque_sign_from_force",

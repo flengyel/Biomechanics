@@ -7,6 +7,7 @@ from math import isclose
 
 from biomech_tutor.core.frames import FrameError, require_same_frame
 from biomech_tutor.core.geometry import DEFAULT_TOLERANCE, Point2D, Vector2D
+from biomech_tutor.core.transforms import RigidTransform2D
 from biomech_tutor.physics.lines_of_action import LineOfAction2D
 
 
@@ -33,3 +34,11 @@ class Force2D:
     @property
     def line_of_action(self) -> LineOfAction2D:
         return LineOfAction2D(self.application_point, self.vector)
+
+    def transport(self, transform: RigidTransform2D) -> "Force2D":
+        """Transport the force to another frame with a rigid transform."""
+
+        return Force2D(
+            transform.apply_point(self.application_point),
+            transform.apply_vector(self.vector),
+        )
