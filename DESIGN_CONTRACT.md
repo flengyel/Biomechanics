@@ -18,6 +18,7 @@ Build a Python package that represents student biomechanics work as structured f
 - The task compiler may target engine objects, but must not depend on student projection, learner interaction, diagnostics, instructor UI, or demos.
 - Instructor authoring code should depend on task vocabulary rather than engine internals.
 - Student projection code may consume compiled task specs, but must not import or expose frame, transform, wrench, or transport terminology.
-- Diagnostics may translate engine failures into feedback, but student-facing messages should use worksheet and course language.
+- Diagnostics consume raw task evidence and produce ordered structured failures without depending on learner interaction or presentation packages.
+- Only the diagnostic adapter and message catalog translate failures into student-facing worksheet and course language.
 
 These are dependency and visibility boundaries, not expressiveness limits. The engine can remain mathematically rich while outer layers receive controlled projections.

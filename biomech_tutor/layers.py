@@ -69,6 +69,19 @@ BOUNDARY_RULES = (
         reason="The task compiler may target engine objects but not presentation layers.",
     ),
     LayerBoundaryRule(
+        package="biomech_tutor.diagnostics",
+        forbidden_import_prefixes=(
+            "biomech_tutor.demo",
+            "biomech_tutor.instructor",
+            "biomech_tutor.learner",
+            "biomech_tutor.student_projection",
+        ),
+        reason=(
+            "Diagnostics may consume task evidence but must remain independent of "
+            "interaction and presentation layers."
+        ),
+    ),
+    LayerBoundaryRule(
         package="biomech_tutor.instructor",
         forbidden_import_prefixes=(
             "biomech_tutor.anatomy",

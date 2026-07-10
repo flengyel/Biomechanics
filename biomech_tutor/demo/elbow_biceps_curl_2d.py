@@ -1,6 +1,7 @@
 """Executable text path for the elbow biceps curl task."""
 
 from biomech_tutor.core.geometry import Point2D, Vector2D
+from biomech_tutor.diagnostics import diagnose_biceps_curl, feedback_for_report
 from biomech_tutor.learner import LearnerDiagram2D
 from biomech_tutor.physics import (
     Force2D,
@@ -51,6 +52,7 @@ def main() -> None:
         counter_torque_muscle_id=muscle_id,
     )
     evaluation = task.evaluate(diagram)
+    feedback = feedback_for_report(diagnose_biceps_curl(evaluation))
 
     print(f"Task: {task.spec.title}")
     print("Declared example: 10 force units downward at 0.30 length units")
@@ -61,6 +63,11 @@ def main() -> None:
         f"({joint_force.vector.x:.3f}, {joint_force.vector.y:.3f})"
     )
     print(f"Current executable construction passes: {evaluation.satisfies_current_slice}")
+    print(
+        "Diagnostic: no blocking errors"
+        if feedback is None
+        else f"Diagnostic: {feedback.message}"
+    )
 
 
 if __name__ == "__main__":

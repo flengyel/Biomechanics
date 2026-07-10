@@ -56,7 +56,20 @@ class BicepsCurlEvaluation:
     dumbbell_unit: ForceTorqueUnitCheck
     counter_torque_muscle_matches: bool | None
     muscle_unit: ForceTorqueUnitCheck | None
-    muscle_force_matches_anatomy: bool | None
+    muscle_force_application_matches: bool | None
+    muscle_force_direction_matches: bool | None
+
+    @property
+    def muscle_force_matches_anatomy(self) -> bool | None:
+        if (
+            self.muscle_force_application_matches is None
+            or self.muscle_force_direction_matches is None
+        ):
+            return None
+        return (
+            self.muscle_force_application_matches
+            and self.muscle_force_direction_matches
+        )
 
     @property
     def satisfies_current_slice(self) -> bool:
@@ -119,23 +132,35 @@ class CompiledBicepsCurlTask:
 
         return self._muscle(muscle_id).force_on_insertion(tension)
 
-    def muscle_force_matches_anatomy(
+    def muscle_force_anatomy_checks(
         self, muscle_id: str, force: Force2D
-    ) -> bool:
-        """Check insertion placement and tension direction against anatomy."""
+    ) -> tuple[bool, bool]:
+        """Check insertion placement and tension direction separately."""
 
         muscle = self._muscle(muscle_id)
-        if not muscle.insertion_region.contains(force.application_point):
-            return False
+        application_matches = muscle.insertion_region.contains(
+            force.application_point
+        )
         expected_direction = force.application_point.vector_to(
             muscle.origin_region.center
         ).normalized()
         received_direction = force.vector.normalized()
-        return isclose(
-            expected_direction.cross_z(received_direction),
-            0.0,
-            abs_tol=DEFAULT_TOLERANCE,
-        ) and expected_direction.dot(received_direction) > 0.0
+        direction_matches = (
+            isclose(
+                expected_direction.cross_z(received_direction),
+                0.0,
+                abs_tol=DEFAULT_TOLERANCE,
+            )
+            and expected_direction.dot(received_direction) > 0.0
+        )
+        return application_matches, direction_matches
+
+    def muscle_force_matches_anatomy(
+        self, muscle_id: str, force: Force2D
+    ) -> bool:
+        """Return whether muscle placement and tension direction both match."""
+
+        return all(self.muscle_force_anatomy_checks(muscle_id, force))
 
     def counter_torque_muscle_ids(self, external_force: Force2D) -> tuple[str, ...]:
         """Compute counter-torque choices from geometry, not inverse labels."""
@@ -194,7 +219,8 @@ class CompiledBicepsCurlTask:
 
         muscle_matches = None
         muscle_check = None
-        muscle_force_matches_anatomy = None
+        muscle_application_matches = None
+        muscle_direction_matches = None
         if dumbbell is not None and dumbbell.force is not None:
             counter_ids = self.counter_torque_muscle_ids(dumbbell.force)
             muscle_matches = diagram.counter_torque_muscle_id in counter_ids
@@ -208,8 +234,12 @@ class CompiledBicepsCurlTask:
                     submitted_muscle is not None
                     and submitted_muscle.force is not None
                 ):
-                    muscle_force_matches_anatomy = self.muscle_force_matches_anatomy(
-                        self.anatomy.biceps.id, submitted_muscle.force
+                    (
+                        muscle_application_matches,
+                        muscle_direction_matches,
+                    ) = self.muscle_force_anatomy_checks(
+                        self.anatomy.biceps.id,
+                        submitted_muscle.force,
                     )
             elif diagram.counter_torque_muscle_id == self.anatomy.triceps.id:
                 submitted_muscle = diagram.force_unit("triceps_muscle_force")
@@ -221,8 +251,12 @@ class CompiledBicepsCurlTask:
                     submitted_muscle is not None
                     and submitted_muscle.force is not None
                 ):
-                    muscle_force_matches_anatomy = self.muscle_force_matches_anatomy(
-                        self.anatomy.triceps.id, submitted_muscle.force
+                    (
+                        muscle_application_matches,
+                        muscle_direction_matches,
+                    ) = self.muscle_force_anatomy_checks(
+                        self.anatomy.triceps.id,
+                        submitted_muscle.force,
                     )
 
         return BicepsCurlEvaluation(
@@ -234,7 +268,8 @@ class CompiledBicepsCurlTask:
             dumbbell_unit=dumbbell_check,
             counter_torque_muscle_matches=muscle_matches,
             muscle_unit=muscle_check,
-            muscle_force_matches_anatomy=muscle_force_matches_anatomy,
+            muscle_force_application_matches=muscle_application_matches,
+            muscle_force_direction_matches=muscle_direction_matches,
         )
 
     def _muscle(self, muscle_id: str) -> MuscleSpan2D:
