@@ -22,8 +22,12 @@ def test_all_packaged_fixtures_compile() -> None:
     assert {spec.id for spec in specs} == {path.stem for path in fixture_paths}
 
     for spec in specs:
-        assert spec.status == "scaffold"
-        assert spec.coverage_level == "worksheet_scaffold"
+        if spec.id == "elbow_biceps_curl_2d":
+            assert spec.status == "in_progress"
+            assert spec.coverage_level == "executable"
+        else:
+            assert spec.status == "scaffold"
+            assert spec.coverage_level == "worksheet_scaffold"
         assert spec.title
         assert spec.level == "introductory_physics"
         assert set(REQUIRED_TASK_FIELDS).issubset(spec.raw)

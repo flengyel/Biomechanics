@@ -1,5 +1,13 @@
 """Physics operations for forces, torques, and constraints."""
 
+from biomech_tutor.physics.constraints import (
+    ConstraintInputError,
+    ForceTorqueUnitCandidate2D,
+    ForceTorqueUnitCheck,
+    ForceTorqueUnitRequirement,
+    LeverArmCandidate2D,
+    check_force_torque_unit,
+)
 from biomech_tutor.physics.forces import Force2D
 from biomech_tutor.physics.lever_arms import LeverArm2D, lever_arm_for_line
 from biomech_tutor.physics.lines_of_action import LineOfAction2D
@@ -29,14 +37,20 @@ from biomech_tutor.physics.torques import (
 from biomech_tutor.physics.wrenches import Wrench2D
 
 __all__ = [
+    "ConstraintInputError",
     "Force2D",
+    "ForceTorqueUnitCandidate2D",
+    "ForceTorqueUnitCheck",
+    "ForceTorqueUnitRequirement",
     "LeverArm2D",
+    "LeverArmCandidate2D",
     "LineOfAction2D",
     "ForceBalanceResult",
     "StaticEquilibriumError",
     "StaticEquilibriumResult",
     "TorqueBalanceResult",
     "Wrench2D",
+    "check_force_torque_unit",
     "force_balance",
     "force_magnitude_for_torque_balance",
     "lever_arm_for_line",

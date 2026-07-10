@@ -1,7 +1,7 @@
 id: elbow_biceps_curl_2d
 title: Elbow biceps curl static torque balance
-status: scaffold
-coverage_level: worksheet_scaffold
+status: in_progress
+coverage_level: executable
 source_worksheet: "Activities/Activity Biceps Curl2d.pptx"
 level: introductory_physics
 body_part_system:
